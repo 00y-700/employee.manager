@@ -5,7 +5,7 @@ USE employees_db;
 --Create Departments Table
 CREATE TABLE department (
 name VARCHAR(30) NOT NULL,
-id INTEGER (11),
+id INTEGER (11) NOT NULL AUTO_INCREMENT,
 PRIMARY KEY (id)
 );
 
@@ -14,7 +14,7 @@ CREATE TABLE roles (
 title VARCHAR (30) NOT NULL,
 salary DECIMAL (10,2) NULL,
 department_id INT,
-id INTEGER (10),
+id INTEGER (11) NOT NULL AUTO_INCREMENT,
 PRIMARY KEY (id)
 );
 
@@ -24,7 +24,7 @@ first_name VARCHAR(30) NOT NULL,
 surname VARCHAR(30) NOT NULL,
 role_id INT,
 manager_id INT,
-id INTEGER(10),
+id INTEGER (11) NOT NULL AUTO_INCREMENT,
 PRIMARY KEY (id)
 );
 
