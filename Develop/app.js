@@ -10,23 +10,23 @@ function menu() {
         message: "Would you like to:",
         choices: ["View All Employees?", "View Employees by Department?", "View Employees by Role?", "Add an Employee?", "Remove an Employee?", "Quit"]
     }
-    ).then(answer =>  {
-        switch(answer.menu) {
+    ).then(answer => {
+        switch (answer.menu) {
             case "View All Employees":
                 viewAll();
-            break;
+                break;
             case "View Employees by Department?":
                 viewDept();
-            break;
+                break;
             case "View Employees by Role?":
                 viewRole();
-            break;
+                break;
             case "Add an Employee?":
                 addNew();
-            break;
+                break;
             case "Remove an Employee?":
                 removeEmp();
-            break
+                break
             case "Quit":
                 connection.end();
         }
@@ -36,13 +36,13 @@ function menu() {
 //Function View All
 
 function viewAll() {
-    var query = connection.query("SELECT * FROM employees", function(err, res) {
+    var query = connection.query("SELECT * FROM employees", function (err, res) {
         if (err) throw err;
-    for (var i = 0; i < res.length; i++) {
-      console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
-    }
-    console.log("-----------------------------------");
-  });
+        for (var i = 0; i < res.length; i++) {
+            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
+        }
+        console.log("-----------------------------------");
+    });
 }
 
 //Function View Employees by Department
@@ -54,26 +54,104 @@ function viewDept() {
             choices: ["Kitchen", "FOH", "Cleaning"]
         }
     ).then(choice => {
-        switch(choice.dept) {
+        switch (choice.dept) {
             case "Kitchen":
                 kitchen()
+                break;
+            case "FOH":
+                foh()
+                break;
+            case "Cleaning":
+                cleaning()
+        }
+    });
+}
+function kitchen() {
+    var query = connection.query("SELECT * FROM songs WHERE department_id=?", [0], function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
+        }
+    });
+}
+function foh() {
+    var query = connection.query("SELECT * FROM songs WHERE department_id=?", [1], function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
         }
     })
-    
-    
-    };
-
-    function kitchen() {
-        var query = connection.query("SELECT * FROM songs WHERE department_id=?", ["Dance"], function(err, res) {
-            if (err) throw err;
-            for (var i = 0; i < res.length; i++) {
-              console.log(res[i].id + " | " + res[i].title + " | " + res[i].artist + " | " + res[i].genre);
-            }
-    }
+}
+function cleaning() {
+    var query = connection.query("SELECT * FROM songs WHERE department_id=?", [2], function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
+        }
+    })
+}
 //Function View Employee by Role
 
+function viewRole() {
+    inquirer.prompt(
+        {
+            name: "role",
+            message: "Which Role Would You Like to View?",
+            choices: ["Chef de Cuisine", "Sous-Chef", "Chef de Partie"]
+        }
+    ).then(choice => {
+        switch (choice.role) {
+            case "Chef de Cuisine":
+                kitchen()
+                break;
+            case "Sous-Chef":
+                foh()
+                break;
+            case "Chef de Partie":
+                cleaning()
+        }
+    });
+}
 //Function Add Employee
+
+function addNew() {
+    inquirer.prompt(
+        {
+            name: "first",
+            type: "input",
+            message: "What is the Employee's First Name?"
+        },
+        {
+            name: "last",
+            type: "input",
+            message: "What is the Employee's Last Name?"
+        },
+        {
+            name: "newE",
+            type: "list",
+            message: "What is the Employee's Department?",
+            choices: ["Kitchen", "FOH", "Cleaning"]
+        }
+    ).then(choice => {
+        switch (choice.dept) {
+            case "Kitchen":
+                inquirer.prompt(
+                    {
+                        name: ""
+                    }
+                )
+                break;
+            case "FOH":
+                foh()
+                break;
+            case "Cleaning":
+                cleaning()
+        }
+    }
+    )
+}
 
 //Function Delete Employee
 
+menu();
 

@@ -1,27 +1,25 @@
---Create Employee Database
 CREATE DATABASE employees_db;
 USE employees_db;
 
---Create Departments Table
 CREATE TABLE department (
 name VARCHAR(30) NOT NULL,
-id INTEGER (11) NOT NULL AUTO_INCREMENT PRIMARY KEY
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
 
---Create Role Table
 CREATE TABLE roles (
 title VARCHAR (30) NOT NULL,
 salary DECIMAL (10,2) NULL,
 department_id INT,
-id INTEGER (11) NOT NULL AUTO_INCREMENT PRIMARY KEY
+FOREIGN KEY (department_id) REFERENCES department (id),
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
 
---Create Employee Table
 CREATE TABLE employees (
 first_name VARCHAR(30) NOT NULL,
 surname VARCHAR(30) NOT NULL,
 role_id INT,
+FOREIGN KEY (role_id) REFERENCES roles (id),
 manager_id INT,
-id INTEGER (11) NOT NULL AUTO_INCREMENT PRIMARY KEY
+FOREIGN KEY (manager_id) REFERENCES employees (id),
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
-
