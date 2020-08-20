@@ -17,7 +17,7 @@ function menu() {
     }
     ).then(answer => {
         switch (answer.menu) {
-            case "View All Employees":
+            case "View All Employees?":
                 viewAll();
                 break;
             case "View Employees by Department?":
@@ -41,9 +41,10 @@ function menu() {
 //Function View All
 
 function viewAll() {
-    var query = connection.query("SELECT * FROM employees", function (err, res) {
+    connection.query("SELECT * FROM employees", function (err, res) {
         if (err) throw err;
         console.table(res)
+        menu();
     });
 }
 
@@ -73,21 +74,21 @@ function viewDept() {
     });
 }
 function kitchen() {
-    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [1], function (err, res) {
+    connection.query("SELECT * FROM employees WHERE manager_id=?", [1], function (err, res) {
         if (err) throw err;
         console.table(res)
         viewDept();
     });
 }
 function foh() {
-    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [6], function (err, res) {
+    connection.query("SELECT * FROM employees WHERE manager_id=?", [6], function (err, res) {
         if (err) throw err;
         console.table(res)
         viewDept();
     })
 }
 function cleaning() {
-    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [10], function (err, res) {
+    connection.query("SELECT * FROM employees WHERE manager_id=?", [10], function (err, res) {
         if (err) throw err;
         console.table(res)
         viewDept();
@@ -111,7 +112,8 @@ function viewRole() {
                 "Server",
                 "Barkeep",
                 "Busser",
-                "Janitor"
+                "Janitor",
+                "Home"
             ]
         }
     ).then(choice => {
@@ -151,7 +153,7 @@ function viewRole() {
     });
 }
 function role(number) {
-    var query = connection.query("SELECT * FROM employees WHERE role_id=?", [number], function (err, res) {
+    connection.query("SELECT * FROM employees WHERE role_id=?", [number], function (err, res) {
         if (err) throw err;
         console.table(res)
         viewRole();
