@@ -4,6 +4,11 @@ var connection = require("./connection.js");
 
 //Function Menu questions
 function menu() {
+    console.log("////////////////////////////////////////")
+    console.log("----------------------------------------")
+    console.log("----------EMPLOYEE TRACKER 1.0----------")
+    console.log("----------------------------------------")
+    console.log("////////////////////////////////////////")
     inquirer.prompt({
         name: "menu",
         type: "list",
@@ -38,10 +43,7 @@ function menu() {
 function viewAll() {
     var query = connection.query("SELECT * FROM employees", function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
-        }
-        console.log("-----------------------------------");
+        console.table(res)
     });
 }
 
@@ -50,8 +52,9 @@ function viewDept() {
     inquirer.prompt(
         {
             name: "dept",
+            type: "list",
             message: "Which Department Would You Like to View?",
-            choices: ["Kitchen", "FOH", "Cleaning"]
+            choices: ["Kitchen", "FOH", "Cleaning", "Home"]
         }
     ).then(choice => {
         switch (choice.dept) {
@@ -63,31 +66,31 @@ function viewDept() {
                 break;
             case "Cleaning":
                 cleaning()
+                break;
+            case "Home":
+                menu()
         }
     });
 }
 function kitchen() {
-    var query = connection.query("SELECT * FROM songs WHERE department_id=?", [0], function (err, res) {
+    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [1], function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
-        }
+        console.table(res)
+        viewDept();
     });
 }
 function foh() {
-    var query = connection.query("SELECT * FROM songs WHERE department_id=?", [1], function (err, res) {
+    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [6], function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
-        }
+        console.table(res)
+        viewDept();
     })
 }
 function cleaning() {
-    var query = connection.query("SELECT * FROM songs WHERE department_id=?", [2], function (err, res) {
+    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [9], function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log(res[i].first_name + " | " + res[i].surname + " | " + res[i].role_id + " | " + res[i].manager_id);
-        }
+        console.table(res)
+        viewDept();
     })
 }
 //Function View Employee by Role
@@ -96,13 +99,25 @@ function viewRole() {
     inquirer.prompt(
         {
             name: "role",
+            type: "list",
             message: "Which Role Would You Like to View?",
-            choices: ["Chef de Cuisine", "Sous-Chef", "Chef de Partie"]
+            choices: [
+                "Chef de Cuisine", 
+                "Sous-Chef", 
+                "Chef de Partie",
+                "Saucier",
+                "Poissonnier",
+                "Expo/Host",
+                "Server",
+                "Barkeep",
+                "Busser",
+                "Janitor"
+            ]
         }
     ).then(choice => {
         switch (choice.role) {
             case "Chef de Cuisine":
-                kitchen()
+                role()
                 break;
             case "Sous-Chef":
                 foh()
@@ -110,6 +125,13 @@ function viewRole() {
             case "Chef de Partie":
                 cleaning()
         }
+    });
+}
+function role() {
+    var query = connection.query("SELECT * FROM employees WHERE role_id=?", [1], function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        viewDept();
     });
 }
 //Function Add Employee

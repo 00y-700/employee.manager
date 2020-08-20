@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+var pass = require("./password.js")
 
 var connection = mysql.createConnection({
   host: "localhost",
