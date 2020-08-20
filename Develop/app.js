@@ -87,7 +87,7 @@ function foh() {
     })
 }
 function cleaning() {
-    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [9], function (err, res) {
+    var query = connection.query("SELECT * FROM employees WHERE manager_id=?", [10], function (err, res) {
         if (err) throw err;
         console.table(res)
         viewDept();
@@ -117,21 +117,44 @@ function viewRole() {
     ).then(choice => {
         switch (choice.role) {
             case "Chef de Cuisine":
-                role()
+                role(1)
                 break;
             case "Sous-Chef":
-                foh()
+                role(2)
                 break;
             case "Chef de Partie":
-                cleaning()
+                role(3)
+            case "Saucier":
+                role(4)
+                break;
+            case "Poissonnier":
+                role(5)
+                break;
+            case "Expo/Host":
+                role(6)
+                break;
+            case "Server":
+                role(7)
+                break;
+            case "Barkeep":
+                role(8)
+                break;
+            case "Busser":
+                role(9)
+                break;
+            case "Janitor":
+                role(10)
+                break;
+            case "Home":
+                menu()
         }
     });
 }
-function role() {
-    var query = connection.query("SELECT * FROM employees WHERE role_id=?", [1], function (err, res) {
+function role(number) {
+    var query = connection.query("SELECT * FROM employees WHERE role_id=?", [number], function (err, res) {
         if (err) throw err;
         console.table(res)
-        viewDept();
+        viewRole();
     });
 }
 //Function Add Employee
